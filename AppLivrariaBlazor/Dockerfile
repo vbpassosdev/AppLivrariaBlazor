@@ -1,11 +1,22 @@
-# Use a imagem oficial do .NET SDK para build
-FROM mcr.microsoft.com/dotnet/sdk:.0 AS build
+# Etapa de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet publish -c Release -o /app
 
-# Use uma imagem runtime para execuÃ§Ã£o
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+# Copia o arquivo .csproj primeiro e restaura as dependências
+COPY AppLivrariaBlazor/AppLivrariaBlazor.csproj ./AppLivrariaBlazor/
+RUN dotnet restore ./AppLivrariaBlazor/AppLivrariaBlazor.csproj
+
+# Copia todos os arquivos
+COPY . .
+
+# Publica o projeto
+WORKDIR /src/AppLivrariaBlazor
+RUN dotnet publish -c Release -o /app/publish
+
+# Etapa final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=build /app .
+COPY --from=build /app/publish .
+
+# Executa a aplicação
 ENTRYPOINT ["dotnet", "AppLivrariaBlazor.dll"]
