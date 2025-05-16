@@ -1,0 +1,5 @@
+﻿echo '{
+  "routes": [
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}' > static.json
