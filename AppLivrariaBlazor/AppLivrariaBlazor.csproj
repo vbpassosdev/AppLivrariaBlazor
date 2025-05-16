@@ -19,4 +19,10 @@
     <None Include="C:\Sistemas\csharp\source\repos\AppLivrariaBlazor\AppLivrariaBlazor\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\static.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
